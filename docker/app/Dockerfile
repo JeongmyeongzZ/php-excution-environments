@@ -16,6 +16,13 @@ RUN set -xe; \
     usermod -u ${APP_USER_ID} -m -d /home/workspace workspace -s $(which bash) && \
     chown -R workspace:workspace /var/www/html
 
+RUN sed -i "s/upload_max_filesize = .*/upload_max_filesize = 16M/" /usr/local/etc/php/php.ini-development && \
+    sed -i "s/post_max_size = .*/post_max_size = 16M/" /usr/local/etc/php/php.ini-development && \
+    sed -i "s/max_execution_time = .*/max_execution_time = 10/" /usr/local/etc/php/php.ini-development && \
+    sed -i "s/max_input_time = .*/max_input_time = 10/" /usr/local/etc/php/php.ini-development
+
+RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
+
 ARG TIME_ZONE='Asia/Seoul'
 
 RUN ln -snf /usr/share/zoneinfo/${TIME_ZONE} /etc/localtime && echo ${TIME_ZONE} > /etc/timezone
