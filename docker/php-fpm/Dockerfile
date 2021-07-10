@@ -1,13 +1,15 @@
-FROM php:7.4-fpm-alpine
-
-ARG APP_USER_ID=1000
-ARG APP_GROUP_ID=1000
+FROM php:7.4.2-fpm-buster
 
 RUN set -xe; \
-    apk --update add \
-        tzdata && \
-        rm /var/cache/apk/*
+    apt-get update -yqq && \
+    pecl channel-update pecl.php.net && \
+    apt-get install -yqq \
+      apt-utils \
+      libzip-dev zip unzip && \
+    docker-php-ext-install zip
 
-ARG TIME_ZONE='Asia/Seoul'
+# Set Timezone
+ARG TZ=UTC
+ENV TZ ${TZ}
 
-RUN cp /usr/share/zoneinfo/${TIME_ZONE} /etc/localtime
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone

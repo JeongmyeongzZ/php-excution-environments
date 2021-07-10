@@ -33,30 +33,31 @@ services:
     ports:
       - 80:80
 
-#  nginx:
-#    tty: true
-#    build:
-#      context: ./nginx
-#      dockerfile: ./Dockerfile
-#      args:
-#        PHP_VERSION: '7.4.10'
-#    volumes:
-#      - ../:/var/www/html
-#    networks:
-#      - backend
-#    ports:
-#      - 81:80
-#    depends_on:
-#      - php-fpm
-#
-#  php-fpm:
-#    tty: true
-#    build:
-#      context: ./php-fpm
-#      dockerfile: ./Dockerfile
-#      args:
-#        PHP_VERSION: '7.4.10'
-#    volumes:
-#      - ../:/var/www/html
-#    networks:
-#      - backend
+  nginx:
+    tty: true
+    build:
+      context: ./nginx
+      dockerfile: ./Dockerfile
+      args:
+        PHP_VERSION: '7.4.10'
+    volumes:
+      - ../:/var/www/html
+      - ./nginx/sites-available:/etc/nginx/sites-available
+    networks:
+      - backend
+    ports:
+      - 80:80
+    depends_on:
+      - php-fpm
+
+  php-fpm:
+    tty: true
+    build:
+      context: ./php-fpm
+      dockerfile: ./Dockerfile
+      args:
+        PHP_VERSION: '7.4.10'
+    volumes:
+      - ../:/var/www/html
+    networks:
+      - backend
