@@ -1,0 +1,62 @@
+version: '3'
+
+networks:
+  backend:
+    driver: bridge
+
+services:
+  app:
+    tty: true
+    build:
+      context: ./app
+      dockerfile: ./Dockerfile
+    volumes:
+      - ../:/var/www/html
+    networks:
+      - backend
+    ports:
+      - 8000:8000
+
+  apache2:
+    tty: true
+    build:
+      context: ./apache
+      dockerfile: ./Dockerfile
+      args:
+        PHP_VERSION: '7.4.10'
+        APP_USER_ID: '${APP_USER_ID:-1000}'
+        APP_GROUP_ID: '${APP_GROUP_ID:-1000}'
+    volumes:
+      - ../:/var/www/html
+    networks:
+      - backend
+    ports:
+      - 80:80
+
+#  nginx:
+#    tty: true
+#    build:
+#      context: ./nginx
+#      dockerfile: ./Dockerfile
+#      args:
+#        PHP_VERSION: '7.4.10'
+#    volumes:
+#      - ../:/var/www/html
+#    networks:
+#      - backend
+#    ports:
+#      - 81:80
+#    depends_on:
+#      - php-fpm
+#
+#  php-fpm:
+#    tty: true
+#    build:
+#      context: ./php-fpm
+#      dockerfile: ./Dockerfile
+#      args:
+#        PHP_VERSION: '7.4.10'
+#    volumes:
+#      - ../:/var/www/html
+#    networks:
+#      - backend
