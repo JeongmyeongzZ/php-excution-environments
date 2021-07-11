@@ -5,33 +5,33 @@ networks:
     driver: bridge
 
 services:
-  app:
-    tty: true
-    build:
-      context: ./app
-      dockerfile: ./Dockerfile
-    volumes:
-      - ../:/var/www/html
-    networks:
-      - backend
-    ports:
-      - 8000:8000
+#  app:
+#    tty: true
+#    build:
+#      context: ./app
+#      dockerfile: ./Dockerfile
+#    volumes:
+#      - ../:/var/www/html
+#    networks:
+#      - backend
+#    ports:
+#      - 8000:8000
 
-  apache2:
-    tty: true
-    build:
-      context: ./apache
-      dockerfile: ./Dockerfile
-      args:
-        PHP_VERSION: '7.4.10'
-        APP_USER_ID: '${APP_USER_ID:-1000}'
-        APP_GROUP_ID: '${APP_GROUP_ID:-1000}'
-    volumes:
-      - ../:/var/www/html
-    networks:
-      - backend
-    ports:
-      - 80:80
+#  apache2:
+#    tty: true
+#    build:
+#      context: ./apache
+#      dockerfile: ./Dockerfile
+#      args:
+#        PHP_VERSION: '7.4.10'
+#        APP_USER_ID: '${APP_USER_ID:-1000}'
+#        APP_GROUP_ID: '${APP_GROUP_ID:-1000}'
+#    volumes:
+#      - ../:/var/www/html
+#    networks:
+#      - backend
+#    ports:
+#      - 80:80
 
   nginx:
     tty: true

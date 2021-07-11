@@ -9,19 +9,14 @@ ARG APP_USER_ID=1000
 ARG APP_GROUP_ID=1000
 
 RUN set -xe; \
-    groupadd -f workspace && \
-    groupmod -g ${APP_GROUP_ID} workspace && \
-    useradd workspace -g workspace && \
-    mkdir -p /home/workspace && chmod 755 /home/workspace && chown workspace:workspace /home/workspace && \
-    usermod -u ${APP_USER_ID} -m -d /home/workspace workspace -s $(which bash) && \
-    chown -R workspace:workspace /var/www/html
+    groupadd -f app && \
+    groupmod -g ${APP_GROUP_ID} app && \
+    useradd app -g app && \
+    mkdir -p /home/app && chmod 755 /home/app && chown app:app /home/app && \
+    usermod -u ${APP_USER_ID} -m -d /home/app app -s $(which bash) && \
+    chown -R app:app /var/www/html
 
-RUN sed -i "s/upload_max_filesize = .*/upload_max_filesize = 16M/" /usr/local/etc/php/php.ini-development && \
-    sed -i "s/post_max_size = .*/post_max_size = 16M/" /usr/local/etc/php/php.ini-development && \
-    sed -i "s/max_execution_time = .*/max_execution_time = 10/" /usr/local/etc/php/php.ini-development && \
-    sed -i "s/max_input_time = .*/max_input_time = 10/" /usr/local/etc/php/php.ini-development
-
-RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
+COPY config/* $PHP_INI_DIR/conf.d/
 
 ARG TIME_ZONE='Asia/Seoul'
 
