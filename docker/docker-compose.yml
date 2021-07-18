@@ -61,3 +61,18 @@ services:
       - ../:/var/www/html
     networks:
       - backend
+
+  maria:
+    image: mariadb:10.5
+    environment:
+      TZ: ${MYSQL_TIMEZONE:-Asia/Seoul}
+      MYSQL_DATABASE: ${DB_DATABASE:-test}
+      MYSQL_USER: ${DB_USERNAME:-root}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-secret}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-secret}
+    volumes:
+      - ./.data/mysql:/var/lib/mysql
+    ports:
+      - ${MYSQL_PORT:-3306}:3306
+    networks:
+      - backend
