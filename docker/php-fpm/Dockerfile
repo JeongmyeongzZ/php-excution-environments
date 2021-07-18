@@ -6,7 +6,7 @@ RUN set -xe; \
     apt-get install -yqq \
       apt-utils \
       libzip-dev zip unzip && \
-    docker-php-ext-install zip
+    docker-php-ext-install zip pdo_mysql
 
 ARG APP_USER_ID=1000
 ARG APP_GROUP_ID=1000
@@ -21,8 +21,8 @@ RUN set -xe; \
 
 RUN sed -i "s/upload_max_filesize = .*/upload_max_filesize = 16M/" /usr/local/etc/php/php.ini-development && \
     sed -i "s/post_max_size = .*/post_max_size = 16M/" /usr/local/etc/php/php.ini-development && \
-    sed -i "s/max_execution_time = .*/max_execution_time = 10/" /usr/local/etc/php/php.ini-development && \
-    sed -i "s/max_input_time = .*/max_input_time = 10/" /usr/local/etc/php/php.ini-development
+    sed -i "s/max_execution_time = .*/max_execution_time = 3/" /usr/local/etc/php/php.ini-development && \
+    sed -i "s/max_input_time = .*/max_input_time = 3/" /usr/local/etc/php/php.ini-development
 
 RUN cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
 
